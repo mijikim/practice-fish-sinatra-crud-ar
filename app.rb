@@ -13,10 +13,16 @@ class App < Sinatra::Application
   end
 
   get "/" do
+    @string = "SELECT username,id FROM users"
     if session[:user_id]
       puts "We still have a session id #{session[:id]}"
     end
-    erb :root
+    if params[:order] == "asc"
+      @string += " ORDER BY username ASC"
+    elsif params[:order] == "desc"
+      @string += " ORDER BY username DESC"
+    end
+    erb :root, :locals => {:send => @string}
   end
 
   get "/registration" do
@@ -46,17 +52,11 @@ class App < Sinatra::Application
 
   post "/sort" do
     if order == asc
-      p "==-=-=-=-"
       suffix = "ORDER BY username ASC"
     elsif order == desc
-      p ">>>"
       suffix = "ORDER BY username DESC"
     end
     redirect "/"
-  end
-
-  post "/sort?order=asc" do
-    p ".,.,..,.,.>>><><"
   end
 
 
