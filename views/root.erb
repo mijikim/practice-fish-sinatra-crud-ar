@@ -10,8 +10,8 @@
     <h2>Current Users</h2>
     <h4>sort</h4>
     <form action="/">
-      <input type="radio" name="order" value="asc">Ascending<br>
-      <input type="radio" name="order" value="desc">Descending<br>
+      <input type="radio" name="order" value="asc" id="asc" select>Ascending<br>
+      <input type="radio" name="order" value="desc" id="desc">Descending<br>
       <button type="submit">Sort</button>
     </form>
 
@@ -20,7 +20,18 @@
           <% if user["id"] != session[:user_id] %>
               <li><%= user["username"] %></li>
           <% end %>
+          <% if user["id"] != session[:user_id] %>
+              <li><%= user["username"] %></li>
+          <% end %>
       <% end %>
+      <h1>Delete user</h1>
+      <form action="/">
+        <select name="delete_user">
+        <% @database_connection.sql(@string).each do |user| %>
+            <option value="<%=user["username"]%>"><%=user["username"]%></option>
+          <% end %>
+        </select>
+      </form>
     </ul>
 
     <!--<form action="/login" method="post"><button type="submit">Sort</button></form>-->

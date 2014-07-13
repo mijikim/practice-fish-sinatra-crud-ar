@@ -109,8 +109,15 @@ feature "Display users" do
   scenario "sort" do
     create_users
     alex_login
-    expect(page).to have_content("Phil")
+    expect(page).to have_content("Phil\nJohn\nSteve")
+    choose('asc')
     click_button "Sort"
-    expect(page).to have_content("John Steve")
+    expect(page).to have_content("John \n Phil \n Steve")
   end
+  scenario "delete user" do
+    create_users
+    alex_login
+    expect(page).to have_content("Delete user Phil")
+  end
+
 end
