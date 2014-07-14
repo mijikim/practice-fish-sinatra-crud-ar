@@ -2,35 +2,58 @@ require "spec_helper"
 
 def create_users
   visit "/registration"
-  fill_in 'username', with:  'Phil'
+  fill_in 'username', with: 'Phil'
   fill_in 'password', with: 'phil1'
   click_button "Submit"
   visit "/registration"
-  fill_in 'username', with:  'John'
+  fill_in 'username', with: 'John'
   fill_in 'password', with: 'john1'
   click_button "Submit"
   visit "/registration"
-  fill_in 'username', with:  'Steve'
+  fill_in 'username', with: 'Steve'
   fill_in 'password', with: 'steve1'
   click_button "Submit"
   visit "/registration"
-  fill_in 'username', with:  'Alex'
+  fill_in 'username', with: 'Alex'
   fill_in 'password', with: 'pass123'
   click_button "Submit"
 end
 
 def create_alex
   visit "/registration"
-  fill_in 'username', with:  'Alex'
+  fill_in 'username', with: 'Alex'
   fill_in 'password', with: 'pass123'
   click_button "Submit"
 end
 
 def alex_login
   visit "/"
-  fill_in 'username', with:  'Alex'
+  fill_in 'username', with: 'Alex'
   fill_in 'password', with: 'pass123'
   click_button 'Login'
+end
+
+def alex_create_fish
+  alex_login
+  fill_in "fishname", with: 'Clownfish'
+  fill_in "wikilink", with: 'http://en.wikipedia.org/wiki/Amphiprioninae'
+  click_button "Create"
+  fill_in "fishname", with: 'Pufferfish'
+  fill_in "wikilink", with: 'http://en.wikipedia.org/wiki/Tetraodontidae'
+  click_button "Create"
+end
+
+def phil_create_fish
+  visit "/"
+  fill_in 'username', with: 'Phil'
+  fill_in 'password', with: 'phil1'
+  click_button 'Login'
+  fill_in "fishname", with: 'Salmon'
+  fill_in "wikilink", with: 'http://en.wikipedia.org/wiki/Amphiprioninae'
+  click_button "Create"
+  fill_in "fishname", with: 'Tuna'
+  fill_in "wikilink", with: 'http://en.wikipedia.org/wiki/Tetraodontidae'
+  click_button "Create"
 end
 
 feature "Homepage and Registration" do
@@ -117,7 +140,38 @@ feature "Display users" do
   scenario "delete user" do
     create_users
     alex_login
-    expect(page).to have_content("Delete user Phil")
+    select "John", from: "delete_user"
+    click_button "Submit"
+    expect(page).to have_no_content("John")
+  end
+  scenario "create fish" do
+    create_users
+    alex_login
+    fill_in "fishname", with: 'Clownfish'
+    fill_in "wikilink", with: 'http://en.wikipedia.org/wiki/Amphiprioninae'
+    click_button "Create"
+    expect(page).to have_content("Clownfish")
+  end
+  scenario "check user fish" do
+    create_users
+    alex_create_fish
+    visit "/"
+    click_button "Logout"
+    fill_in 'username', with: 'Phil'
+    fill_in 'password', with: 'phil1'
+    click_button "Login"
+    expect(page).to have_no_content("Clownfish Pufferfish")
+  end
+  scenario "check other user's fish" do
+    create_users
+    alex_create_fish
+    click_button "Logout"
+    fill_in 'username', with: 'Phil'
+    fill_in 'password', with: 'phil1'
+    click_button "Login"
+    select "Alex", from: "fish_list"
+    click_button "Check Fish"
+    expect(page).to have_content("Clownfish")
   end
 
 end

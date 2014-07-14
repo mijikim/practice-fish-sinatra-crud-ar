@@ -26,6 +26,9 @@ GEM
       timers (~> 1.1.0)
     diff-lcs (1.2.5)
     ffi (1.9.3)
+    gschool_database_connection (1.0.0)
+      activerecord
+      pg (~> 0.17.1)
     i18n (0.6.9)
     json (1.8.1)
     listen (2.7.9)
@@ -81,6 +84,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   capybara
+  gschool_database_connection
   pg (~> 0.17.1)
   rack-flash3
   rake

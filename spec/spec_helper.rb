@@ -4,7 +4,7 @@ ENV["RACK_ENV"] = "test"
 
 Capybara.app = App
 
-database_connection = DatabaseConnection.establish(ENV["RACK_ENV"])
+database_connection = GschoolDatabaseConnection::DatabaseConnection.establish(ENV["RACK_ENV"])
 
 RSpec.configure do |config|
   config.before do
