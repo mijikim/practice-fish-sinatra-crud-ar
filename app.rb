@@ -28,17 +28,17 @@ class App < Sinatra::Application
 
   post "/registration" do
     if params[:username] == '' && params[:password] == ''
-      flash[:notice] = "Please fill in username and password"
+      flash[:registration] = "Please fill in username and password"
       redirect "/registration"
     elsif params[:password] == ''
-      flash[:notice] = "Please fill in password"
+      flash[:registration] = "Please fill in password"
       redirect "/registration"
     elsif params[:username] == ''
-      flash[:notice] = "Please fill in username"
+      flash[:registration] = "Please fill in username"
       redirect "/registration"
     else
       if @database_connection.sql("SELECT id FROM users WHERE username = '#{params[:username]}'") != []
-        flash[:notice] = "Username is already in use, please choose another."
+        flash[:registration] = "Username is already in use, please choose another."
         redirect "/registration"
       end
       flash[:notice] = "Thank you for registering"
@@ -67,7 +67,7 @@ class App < Sinatra::Application
     session[:user_id] = current_user["id"]
     # p "the session id is #{session[:user_id]}"
     flash[:not_logged_in] = true
-    flash[:notice] = "Welcome, #{params[:username]}"
+    flash[:login] = "Welcome, #{params[:username].capitalize}"
     redirect "/"
   end
 
