@@ -82,9 +82,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord
   capybara
-  gschool_database_connection
+  gschool_database_connection (~> 1.0.0)
   pg (~> 0.17.1)
   rack-flash3
   rake

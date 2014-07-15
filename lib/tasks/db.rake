@@ -1,5 +1,6 @@
 require "active_record"
 require "yaml"
+require "gschool_database_connection"
 
 def env
   ENV["RACK_ENV"] || "development"

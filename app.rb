@@ -3,6 +3,7 @@ require "gschool_database_connection"
 require "active_record"
 require "rack-flash"
 
+
 class App < Sinatra::Application
   enable :sessions
   use Rack::Flash
@@ -10,6 +11,7 @@ class App < Sinatra::Application
   def initialize
     super
     @database_connection = GschoolDatabaseConnection::DatabaseConnection.establish(ENV["RACK_ENV"])
+
   end
 
   get "/" do
