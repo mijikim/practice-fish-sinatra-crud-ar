@@ -78,7 +78,7 @@ class App < Sinatra::Application
 
   get "/fishes/:users_fishes" do
     @fishes_table.find_by(params[:users_fishes])
-
+    #pass info into template html.
   end
 
   post "/logout" do
