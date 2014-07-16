@@ -33,7 +33,10 @@ Follow the mockups and stories to get started. The mockups only go through to us
 1. Check heroku and bask in the glory of real software
 1. Rinse and Repeat
 
+http://floating-chamber-4723.herokuapp.com/
 
+
+git add ignore bottom codes
 
         <!--<h1>Your Fish</h1>-->
         <!--<ul>-->
