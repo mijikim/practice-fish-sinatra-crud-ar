@@ -32,3 +32,33 @@ Follow the mockups and stories to get started. The mockups only go through to us
 1. Finish and deliver story
 1. Check heroku and bask in the glory of real software
 1. Rinse and Repeat
+
+
+
+        <!--<h1>Your Fish</h1>-->
+        <!--<ul>-->
+          <!--<% @database_connection.sql("SELECT * FROM fish WHERE user_id = '#{session[:user_id]}'").each do |fish| %>-->
+            <!--<li><%= fish["name"] %> <%= fish["url"] %></li>-->
+          <!--<% end %>-->
+        <!--</ul>-->
+        <!--<h1>Other User's Fish</h1>-->
+        <!--<form action="/fish_list" method="post">-->
+          <!--<select name="fish_list" id="fish_list">-->
+            <!--<% @database_connection.sql(@order_user_string).each do |user| %>-->
+              <!--<option value="<%=user["id"]%>"><%=user["username"]%></option>-->
+            <!--<% end %>-->
+          <!--</select>-->
+          <!--<button type="submit">Check Fish</button>-->
+        <!--</form>-->
+
+        <!--<h1>Create Fish</h1>-->
+        <!--<form action="/create_fish" method="post" name="create_fish">-->
+          <!--Fish <input type="text" name="fishname" id="fishname">-->
+          <!--Wikipedia link <input type="text" name="wikilink" id="wikilink">-->
+          <!--</select>-->
+          <!--<button type="submit">Create</button>-->
+        <!--</form>-->
+
+
+
+        <!--<form action="/login" method="post"><button type="submit">Sort</button></form>-->

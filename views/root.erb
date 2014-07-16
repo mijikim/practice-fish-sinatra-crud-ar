@@ -1,5 +1,3 @@
-
-
 <!--if not logged in-->
 <body>
 <div class="wrapper">
@@ -7,84 +5,58 @@
     <article class="one_fourth"></article>
     <article class="one_half">
       <% if session[:user_id] %>
-        <h2>Users</h2>
-        <form class="user_sort" action="/sort" method="post" align="left">
-          <input type="radio" name="order" value="asc" id="asc" select>Ascending<br>
-          <input type="radio" name="order" value="desc" id="desc">Descending<br>
-          <button class="sort_button" type="submit">Sort</button>
-        </form><br>
+          <h2>Users</h2>
 
-        <table class="new_table" border="5" >
-          <tr><th>Users</th><th>Actions</th></tr>
-          <tr>
-          <% @database_connection.sql(@order_user_string).each do |user| %>
-            <% if user["id"] != session[:user_id] %>
-              <td><%= user["username"] %></td>
-                <td>Delete</td>
-            <% end %>
+          <form class="user_sort" action="/sort" method="post" align="left">
+            <input type="radio" name="order" value="asc" id="asc" select>Ascending<br>
+            <input type="radio" name="order" value="desc" id="desc">Descending<br>
+            <button class="sort_button" type="submit">Sort</button>
+          </form>
+          <br>
+
+          <table class="new_table" border="5">
+            <tr>
+              <th>Users</th>
+              <th>Actions</th>
             </tr>
-          <% end %>
-        </table>
+            <tr>
+              <% users.each do |user| %>
+                  <% if user["id"] != session[:user_id] %>
+                      <td><%= user["username"] %></td>
 
-        <h1>Delete user</h1>
-        <form action="/delete" method="post">
-          <select name="delete_user" id="delete_user">
-            <% @database_connection.sql(@order_user_string).each do |user| %>
-              <option value="<%=user["id"]%>"><%=user["username"]%></option>
-            <% end %>
-          </select>
-          <button type="submit">Submit</button>
-        </form>
+                        <td>
+                          <form action="/delete" method="post">
+                          <input type="hidden" name="user_id" value="<%= user["id"] %>">
+                          <button type="submite">Delete</button>
+                        </form>
+                        </td>
 
-        <h1>Create Fish</h1>
-        <form action="/create_fish" method="post" name="create_fish">
-          Fish <input type="text" name="fishname" id="fishname">
-          Wikipedia link <input type="text" name="wikilink" id="wikilink">
-          </select>
-          <button type="submit">Create</button>
-        </form>
+                  <% end %>
+                  </tr>
+              <% end %>
+              </table>
+          <br><br>
+          <form action="/logout" method="post">
+            <button id="submit_button" type="submit">Logout</button>
+          </form>
 
-        <h1>Your Fish</h1>
-        <ul>
-          <% @database_connection.sql("SELECT * FROM fish WHERE user_id = '#{session[:user_id]}'").each do |fish| %>
-            <li><%= fish["name"] %> <%= fish["url"] %></li>
-          <% end %>
-        </ul>
-        <h1>Other User's Fish</h1>
-        <form action="/fish_list" method="post">
-          <select name="fish_list" id="fish_list">
-            <% @database_connection.sql(@order_user_string).each do |user| %>
-              <option value="<%=user["id"]%>"><%=user["username"]%></option>
-            <% end %>
-          </select>
-          <button type="submit">Check Fish</button>
-
-        </form>
-        <form action="/logout" method="post">
-          <button id="submit_button" type="submit">Logout</button>
-        </form>
-
-        <!--<form action="/login" method="post"><button type="submit">Sort</button></form>-->
       <% else %>
-        <form action="/registration" method="get">
-          <button id="registration_button" type="submit">Register</button>
-        </form>
+          <form action="/registration" method="get">
+            <button id="registration_button" type="submit">Register</button>
+          </form>
 
-        <h2>OR</h2>
+          <h2>OR</h2>
 
-        <form action="/login" method="post">
-          Username: <br> <input class="form_width" type="text" name="username"><br>
-          Password: <br> <input class="form_width" type="password" name="password"><br><br>
-          <button id="login_button" type="submit">Login</button>
-        </form>
+          <form action="/login" method="post">
+            Username: <br> <input class="form_width" type="text" name="username"><br>
+            Password: <br> <input class="form_width" type="password" name="password"><br><br>
+            <button id="login_button" type="submit">Login</button>
+          </form>
 
       <% end %>
 
     </article>
     <article class="one_fourth"></article>
-
   </section>
-
-
 </div>
 </body>

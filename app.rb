@@ -1,7 +1,8 @@
 require "sinatra"
 require "gschool_database_connection"
-require "active_record"
+# require "active_record"
 require "rack-flash"
+require_relative "lib/users_table"
 
 
 class App < Sinatra::Application
@@ -10,16 +11,15 @@ class App < Sinatra::Application
 
   def initialize
     super
-    @database_connection = GschoolDatabaseConnection::DatabaseConnection.establish(ENV["RACK_ENV"])
-
+    @users_table = UsersTable.new(
+        GschoolDatabaseConnection::DatabaseConnection.establish(ENV["RACK_ENV"])
+    )
   end
 
   get "/" do
-    @order_user_string = "SELECT username,id FROM users"
-    if session[:user_id]
-      puts "We still have a session id #{session[:id]}"
-    end
-    erb :root, :locals => {:send => @order_user_string}
+    users = @users_table.users
+
+    erb :root, :locals => {:users => users}
   end
 
   get "/registration" do
@@ -37,21 +37,17 @@ class App < Sinatra::Application
       flash[:registration] = "Please fill in username"
       redirect "/registration"
     else
-      if @database_connection.sql("SELECT id FROM users WHERE username = '#{params[:username]}'") != []
+      if @users_table.find_user(params[:username]) != []
         flash[:registration] = "Username is already in use, please choose another."
         redirect "/registration"
       end
       flash[:notice] = "Thank you for registering"
-      @database_connection.sql("INSERT INTO users (username, password) VALUES ('#{params[:username]}', '#{params[:password]}')")
+      @users_table.create(params[:username], params[:password])
       redirect "/"
     end
   end
 
   post "/sort" do
-    @order_user_string = "SELECT username,id FROM users"
-    if session[:user_id]
-      puts "We still have a session id #{session[:id]}"
-    end
     if params[:order] == "asc"
       @order_user_string += " ORDER BY username ASC"
     elsif params[:order] == "desc"
@@ -62,8 +58,7 @@ class App < Sinatra::Application
 
 
   post "/login" do
-    current_user = @database_connection.sql("SELECT * FROM users WHERE username='#{params[:username]}' AND password='#{params[:password]}';").first
-    puts "user is #{current_user["username"]}"
+    current_user = @users_table.find_by(params[:username], params[:password])
     session[:user_id] = current_user["id"]
     # p "the session id is #{session[:user_id]}"
     flash[:not_logged_in] = true
@@ -72,7 +67,7 @@ class App < Sinatra::Application
   end
 
   post "/delete" do
-    delete_users(params[:delete_user])
+    @users_table.delete_user(params[:user_id])
     redirect "/"
   end
 
