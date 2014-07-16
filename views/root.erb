@@ -7,31 +7,15 @@
     <article class="one_fourth"></article>
     <article class="one_half">
       <% if session[:user_id] %>
-
-        <% if flash[:login] %>
-          <p style="color: black; font-size: 25px"><%= flash[:login] %></p>
-        <% end %>
-
-        <h2>Current Users</h2>
-        <h4>sort</h4>
-        <form action="/sort" method="post">
+        <h2>Users</h2>
+        <form class="user_sort" action="/sort" method="post" align="left">
           <input type="radio" name="order" value="asc" id="asc" select>Ascending<br>
           <input type="radio" name="order" value="desc" id="desc">Descending<br>
-          <button type="submit">Sort</button>
-        </form>
+          <button class="sort_button" type="submit">Sort</button>
+        </form><br>
 
-
-
-        <!--<ul>-->
-          <!--<% @database_connection.sql(@order_user_string).each do |user| %>-->
-            <!--<% if user["id"] != session[:user_id] %>-->
-              <!--<li><%= user["username"] %></li>-->
-            <!--<% end %>-->
-          <!--<% end %>-->
-        <!--</ul>-->
-
-        <table style="width:300px">
-          <tr><td>Users</td><td>Actions</td></tr>
+        <table class="new_table" border="5" >
+          <tr><th>Users</th><th>Actions</th></tr>
           <tr>
           <% @database_connection.sql(@order_user_string).each do |user| %>
             <% if user["id"] != session[:user_id] %>
@@ -40,13 +24,7 @@
             <% end %>
             </tr>
           <% end %>
-
         </table>
-
-
-
-
-
 
         <h1>Delete user</h1>
         <form action="/delete" method="post">

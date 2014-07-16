@@ -6,7 +6,7 @@ body {
 }
 
 header {
-    background-color: #c5c5c5; /* Dark Grey */
+    background-color: #c5c5c5;
 }
 
 header img {
@@ -63,7 +63,7 @@ article {
     margin-left: 20px;
     margin-bottom: 16px;
     float: left;
-    border: solid #000 1px;
+    /*border: solid #000 1px;*/
 }
 
 #registration_button {
@@ -102,7 +102,7 @@ article {
 
 article {
     box-sizing: border-box;
-    border: solid #000 1px;
+    /*border: solid #000 1px;*/
     padding: 10px;
 }
 
@@ -116,7 +116,7 @@ article {
 
 section {
     box-sizing: border-box;
-    border: solid red 1px;
+    /*border: solid red 1px;*/
     padding: 20px 0 10px 0;
 }
 
@@ -157,7 +157,6 @@ h2 {
 div{
     height:100px;
     width:100px;
-    border:2px solid
 }
 
 h3{
@@ -167,8 +166,25 @@ h3{
     background:white;
 }
 
-table,th,td
+table
 {
     border:1px solid black;
     border-collapse:collapse;
+    width: 100%;
+    margin: auto;
 }
+
+.new_table th { background-color:darkgrey;color:black; width: 50%; text-align: left;}
+.new_table tr:nth-child(even) td{ background-color:lightgray;color:black; }
+.new_table tr:nth-child(odd) td{ background-color:white;color:black; }
+
+.user_sort {border:1px solid black; width: 23%; margin: auto;}
+.sort_button {width: 100%}
+
+
+/*.my_table,th,td*/
+/*{*/
+    /*background-color:#FFFFE0;border-collapse:collapse;*/
+    /*background-color:#BDB76B;color:white;*/
+    /*padding:5px;border:1px solid #BDB76B;*/
+/*}*/
