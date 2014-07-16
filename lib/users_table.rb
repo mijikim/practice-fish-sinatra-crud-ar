@@ -49,10 +49,10 @@ class UsersTable
     @database_connection.sql(find_by_sql).first
   end
 
-  def delete_user(user_id)
+  def delete_user(username)
     delete_user_sql = <<-SQL
       DELETE FROM users
-      WHERE id = #{user_id}
+      WHERE username = '#{username}'
     SQL
 
     @database_connection.sql(delete_user_sql)

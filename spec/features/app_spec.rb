@@ -144,9 +144,9 @@ feature "Display users" do
   scenario "delete user" do
     create_users
     alex_login
-    select "John", from: "delete_user"
-    click_button "Submit"
-    expect(page).to have_no_content("John")
+    visit "/delete/phil"
+    expect(page).to have_no_content("Phil")
+
   end
   scenario "create fish" do
     create_users

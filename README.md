@@ -54,13 +54,6 @@ git add ignore bottom codes
           <!--<button type="submit">Check Fish</button>-->
         <!--</form>-->
 
-        <!--<h1>Create Fish</h1>-->
-        <!--<form action="/create_fish" method="post" name="create_fish">-->
-          <!--Fish <input type="text" name="fishname" id="fishname">-->
-          <!--Wikipedia link <input type="text" name="wikilink" id="wikilink">-->
-          <!--</select>-->
-          <!--<button type="submit">Create</button>-->
-        <!--</form>-->
 
 
 

@@ -22,20 +22,43 @@
             <tr>
               <% users.each do |user| %>
                   <% if user["id"] != session[:user_id] %>
-                      <td><%= user["username"] %></td>
-
-                        <td>
-                          <form action="/delete" method="post">
-                          <input type="hidden" name="user_id" value="<%= user["id"] %>">
-                          <button type="submite">Delete</button>
-                        </form>
-                        </td>
-
+                      <td>
+                        <a href="/fishes/<%= user["username"] %>"><%= user["username"] %></a>
+                      </td>
+                      <td>
+                        <a href="/delete/<%= user["username"] %>">Delete</a>
+                      </td>
                   <% end %>
                   </tr>
               <% end %>
               </table>
           <br><br>
+
+          <h2>My Fish</h2>
+
+          <table class="new_table" border="5">
+            <tr>
+              <th>Name</th>
+              <th>Actions</th>
+            </tr>
+            <tr>
+              <% fishes.each do |fish| %>
+                  <% if fish["user_id"] == session[:user_id] %>
+                      <td><%= fish["name"] %></td>
+                      <td>
+                        <a href="<%= fish["url"] %>">Wikipedia</a>
+                      </td>
+                  <% end %>
+                  </tr>
+              <% end %>
+              </table>
+          <br>
+          <form action="/create_fish" method="get">
+            <button id="create_fish_button" type="submit">Create Fish</button>
+          </form>
+          <br><br>
+
+
           <form action="/logout" method="post">
             <button id="submit_button" type="submit">Logout</button>
           </form>

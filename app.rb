@@ -3,6 +3,7 @@ require "gschool_database_connection"
 # require "active_record"
 require "rack-flash"
 require_relative "lib/users_table"
+require_relative "lib/fishes_table"
 
 
 class App < Sinatra::Application
@@ -14,12 +15,16 @@ class App < Sinatra::Application
     @users_table = UsersTable.new(
         GschoolDatabaseConnection::DatabaseConnection.establish(ENV["RACK_ENV"])
     )
+    @fishes_table = FishesTable.new(
+        GschoolDatabaseConnection::DatabaseConnection.establish(ENV["RACK_ENV"])
+    )
   end
 
   get "/" do
     users = @users_table.users
+    fishes = @fishes_table.fishes
 
-    erb :root, :locals => {:users => users}
+    erb :root, :locals => {:users => users, :fishes => fishes}
   end
 
   get "/registration" do
@@ -47,14 +52,14 @@ class App < Sinatra::Application
     end
   end
 
-  post "/sort" do
-    if params[:order] == "asc"
-      @order_user_string += " ORDER BY username ASC"
-    elsif params[:order] == "desc"
-      @order_user_string += " ORDER BY username DESC"
-    end
-    erb :root, :locals => {:send => @order_user_string}
-  end
+  # post "/sort" do
+  #   if params[:order] == "asc"
+  #     @order_user_string += " ORDER BY username ASC"
+  #   elsif params[:order] == "desc"
+  #     @order_user_string += " ORDER BY username DESC"
+  #   end
+  #   erb :root, :locals => {:send => @order_user_string}
+  # end
 
 
   post "/login" do
@@ -66,9 +71,14 @@ class App < Sinatra::Application
     redirect "/"
   end
 
-  post "/delete" do
-    @users_table.delete_user(params[:user_id])
+  get "/delete/:username_to_delete" do
+    @users_table.delete_user(params[:username_to_delete].downcase)
     redirect "/"
+  end
+
+  get "/fishes/:users_fishes" do
+    @fishes_table.find_by(params[:users_fishes])
+
   end
 
   post "/logout" do
@@ -76,9 +86,13 @@ class App < Sinatra::Application
     redirect "/"
   end
 
+  get "/create_fish" do
+    erb :create_fish
+  end
+
   post "/create_fish" do
-    @database_connection.sql("insert into fish (name, url, user_id) values ('#{params[:fishname]}', '#{params[:wikilink]}', #{session[:user_id]})")
-    redirect back
+    @fishes_table.create(params[:fishname], params[:wikilink], session[:user_id])
+    redirect "/"
   end
 
   post "/fish_list" do
@@ -89,9 +103,7 @@ class App < Sinatra::Application
 
   private
 
-  def delete_users(user_id)
-    @database_connection.sql("delete from users where id = '#{user_id}'")
-  end
+
 
   def find_other_users_fish(username)
     @database_connection.sql("select * from fish inner join users on fish.user_id = users.id where users.username = '#{username}'")
