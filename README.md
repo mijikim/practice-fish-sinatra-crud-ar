@@ -33,28 +33,8 @@ Follow the mockups and stories to get started. The mockups only go through to us
 1. Check heroku and bask in the glory of real software
 1. Rinse and Repeat
 
-http://floating-chamber-4723.herokuapp.com/
+Alex's heroku: http://floating-chamber-4723.herokuapp.com/
 
+Update to date-----> MiJi's heroku: http://agile-eyrie-4014.herokuapp.com/
 
-git add ignore bottom codes
-
-        <!--<h1>Your Fish</h1>-->
-        <!--<ul>-->
-          <!--<% @database_connection.sql("SELECT * FROM fish WHERE user_id = '#{session[:user_id]}'").each do |fish| %>-->
-            <!--<li><%= fish["name"] %> <%= fish["url"] %></li>-->
-          <!--<% end %>-->
-        <!--</ul>-->
-        <!--<h1>Other User's Fish</h1>-->
-        <!--<form action="/fish_list" method="post">-->
-          <!--<select name="fish_list" id="fish_list">-->
-            <!--<% @database_connection.sql(@order_user_string).each do |user| %>-->
-              <!--<option value="<%=user["id"]%>"><%=user["username"]%></option>-->
-            <!--<% end %>-->
-          <!--</select>-->
-          <!--<button type="submit">Check Fish</button>-->
-        <!--</form>-->
-
-
-
-
-        <!--<form action="/login" method="post"><button type="submit">Sort</button></form>-->
+       

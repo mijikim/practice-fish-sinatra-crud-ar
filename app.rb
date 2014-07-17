@@ -53,6 +53,22 @@ class App < Sinatra::Application
     end
   end
 
+  post "/login" do
+    current_user = @users_table.find_user(params[:username]).first
+    if current_user
+    current_pass = @users_table.check_password(current_user["id"]).first.value
+    end
+    if current_user == nil
+      flash[:not_logged_in] = "Incorrect username"
+    elsif current_pass["password"] != params[:password]
+      flash[:not_logged_in] = "Incorrect password"
+    else
+      session[:user_id] = current_user["id"]
+      flash[:login] = "Welcome, #{params[:username].capitalize}"
+    end
+    redirect "/"
+  end
+
   post "/sort" do
      if params[:order] == "asc"
       users = @users_table.users(params[:order])
@@ -63,14 +79,6 @@ class App < Sinatra::Application
     erb :root, :locals => {:users => users, :fishes => fishes}
   end
 
-  post "/login" do
-    current_user = @users_table.find_by(params[:username], params[:password])
-    session[:user_id] = current_user["id"]
-    # p "the session id is #{session[:user_id]}"
-    flash[:not_logged_in] = true
-    flash[:login] = "Welcome, #{params[:username].capitalize}"
-    redirect "/"
-  end
 
   get "/delete/:username_to_delete" do
     @users_table.delete_user(params[:username_to_delete].downcase)

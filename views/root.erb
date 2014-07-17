@@ -80,6 +80,9 @@
         <h2>OR</h2>
 
         <form action="/login" method="post">
+          <% if flash[:not_logged_in] %>
+            <p style="color: red"><%= flash[:not_logged_in] %></p><br>
+          <% end %>
           Username: <br> <input class="form_width" type="text" name="username"><br>
           Password: <br> <input class="form_width" type="password" name="password"><br><br>
           <button id="login_button" type="submit">Login</button>

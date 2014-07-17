@@ -144,9 +144,7 @@ feature "Display users" do
   scenario "delete user" do
     create_users
     alex_login
-    # visit "/delete/phil"
     click_link "phil_delete"
-    save_and_open_page
     expect(page).to have_no_content("phil Delete")
 
   end

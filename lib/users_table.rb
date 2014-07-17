@@ -32,6 +32,15 @@ class UsersTable
     @database_connection.sql(find_sql)
   end
 
+  def check_password(user_id)
+    check_pass = <<-SQL
+    SELECT password FROM users
+    WHERE id = #{user_id}
+    SQL
+
+    @database_connection.sql(check_pass)
+  end
+
   def users(order=[])
     users_sql = <<-SQL
       SELECT username, id FROM users
