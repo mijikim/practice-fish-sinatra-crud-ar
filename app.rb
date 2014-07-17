@@ -13,11 +13,12 @@ class App < Sinatra::Application
   def initialize
     super
     @users_table = UsersTable.new(
-        GschoolDatabaseConnection::DatabaseConnection.establish(ENV["RACK_ENV"])
+      GschoolDatabaseConnection::DatabaseConnection.establish(ENV["RACK_ENV"])
     )
     @fishes_table = FishesTable.new(
-        GschoolDatabaseConnection::DatabaseConnection.establish(ENV["RACK_ENV"])
+      GschoolDatabaseConnection::DatabaseConnection.establish(ENV["RACK_ENV"])
     )
+
   end
 
   get "/" do
@@ -52,15 +53,15 @@ class App < Sinatra::Application
     end
   end
 
-  # post "/sort" do
-  #   if params[:order] == "asc"
-  #     @order_user_string += " ORDER BY username ASC"
-  #   elsif params[:order] == "desc"
-  #     @order_user_string += " ORDER BY username DESC"
-  #   end
-  #   erb :root, :locals => {:send => @order_user_string}
-  # end
-
+  post "/sort" do
+     if params[:order] == "asc"
+      users = @users_table.users(params[:order])
+    elsif params[:order] == "desc"
+      users = @users_table.users(params[:order])
+    end
+    fishes = @fishes_table.fishes
+    erb :root, :locals => {:users => users, :fishes => fishes}
+  end
 
   post "/login" do
     current_user = @users_table.find_by(params[:username], params[:password])
@@ -77,8 +78,9 @@ class App < Sinatra::Application
   end
 
   get "/fishes/:users_fishes" do
-    @fishes_table.find_by(params[:users_fishes])
-    #pass info into template html.
+    fishes = @fishes_table.find_by(params[:users_fishes])
+
+    erb :users_fish, :locals => {:fishes => fishes}
   end
 
   post "/logout" do
@@ -97,12 +99,10 @@ class App < Sinatra::Application
 
   post "/fish_list" do
     @fish = find_other_users_fish(params[:username])
-    p @fish
     redirect back
   end
 
   private
-
 
 
   def find_other_users_fish(username)

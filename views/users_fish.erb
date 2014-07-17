@@ -1,0 +1,24 @@
+<h2>That persons fish page</h2>
+<div class="wrapper">
+  <section class="clearfix">
+    <article class="one_fourth"></article>
+    <article class="one_half">
+      <table class="new_table" border="5">
+        <tr>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+        <tr>
+          <% fishes.each do |fish| %>
+            <td><%= fish["name"] %></td>
+            <td>
+              <a href="<%= fish["url"] %>">Wikipedia</a>
+            </td>
+            </tr>
+          <% end %>
+          </table>
+      <br>
+    </article>
+    <article class="one_fourth"></article>
+  </section>
+</div>

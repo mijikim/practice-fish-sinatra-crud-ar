@@ -14,7 +14,7 @@ def create_users
   fill_in 'password', with: 'steve1'
   click_button "Register"
   visit "/registration"
-  fill_in 'username', with: 'Alex'
+  fill_in 'username', with: 'alex'
   fill_in 'password', with: 'pass123'
   click_button "Register"
 end
@@ -31,15 +31,17 @@ def alex_login
   fill_in 'username', with: 'alex'
   fill_in 'password', with: 'pass123'
   expect(page).to have_button("Login")
-
   click_button "Login"
 end
 
 def alex_create_fish
+  create_users
   alex_login
+  click_button "Create Fish"
   fill_in "fishname", with: 'Clownfish'
   fill_in "wikilink", with: 'http://en.wikipedia.org/wiki/Amphiprioninae'
   click_button "Create"
+  click_button "Create Fish"
   fill_in "fishname", with: 'Pufferfish'
   fill_in "wikilink", with: 'http://en.wikipedia.org/wiki/Tetraodontidae'
   click_button "Create"
@@ -50,6 +52,7 @@ def phil_create_fish
   fill_in 'Username', with: 'Phil'
   fill_in 'Password', with: 'phil1'
   click_button 'Login'
+  click_button "Create Fish"
   fill_in "fishname", with: 'Salmon'
   fill_in "wikilink", with: 'http://en.wikipedia.org/wiki/Amphiprioninae'
   click_button "Create"
@@ -126,38 +129,37 @@ feature "Login and out" do
 end
 feature "Display users" do
   scenario "on user page display other current users" do
-
     create_users
     alex_login
-    expect(page).to have_content("John")
-    expect(page).to have_content("Steve")
+    expect(page).to have_content("john")
+    expect(page).to have_content("steve")
   end
   scenario "sort" do
-    skip
     create_users
     alex_login
-    expect(page).to have_content("Phil\nJohn\nSteve")
-    choose('asc')
-    click_button "Sort"
-    expect(page).to have_content("John \n Phil \n Steve")
+    expect(page).to have_content("phil Delete john Delete steve")
+    click_button "Ascending"
+    expect(page).to have_content("john Delete phil Delete steve")
   end
   scenario "delete user" do
     create_users
     alex_login
-    visit "/delete/phil"
-    expect(page).to have_no_content("Phil")
+    # visit "/delete/phil"
+    click_link "phil_delete"
+    save_and_open_page
+    expect(page).to have_no_content("phil Delete")
 
   end
   scenario "create fish" do
     create_users
     alex_login
+    click_button "Create Fish"
     fill_in "fishname", with: 'Clownfish'
     fill_in "wikilink", with: 'http://en.wikipedia.org/wiki/Amphiprioninae'
     click_button "Create"
     expect(page).to have_content("Clownfish")
   end
   scenario "check user fish" do
-    create_users
     alex_create_fish
     visit "/"
     click_button "Logout"
@@ -167,6 +169,7 @@ feature "Display users" do
     expect(page).to have_no_content("Clownfish Pufferfish")
   end
   scenario "check other user's fish" do
+    skip
     create_users
     alex_create_fish
     click_button "Logout"

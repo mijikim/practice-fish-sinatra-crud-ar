@@ -4,9 +4,10 @@ class UsersTable
   end
 
   def create(username, password)
+    # user = username.downcase
     insert_user_sql = <<-SQL
       INSERT INTO users (username, password)
-      VALUES ('#{username}', '#{password}')
+      VALUES ('#{username.downcase}', '#{password}')
       RETURNING id
     SQL
 
@@ -31,10 +32,20 @@ class UsersTable
     @database_connection.sql(find_sql)
   end
 
-  def users
+  def users(order=[])
     users_sql = <<-SQL
       SELECT username, id FROM users
     SQL
+
+    if order == "asc"
+      users_sql += <<-SQL
+      ORDER BY username ASC
+      SQL
+    elsif order == "desc"
+      users_sql += <<-SQL
+      ORDER BY username DESC
+      SQL
+    end
 
     @database_connection.sql(users_sql)
   end
@@ -42,7 +53,7 @@ class UsersTable
   def find_by(username, password)
     find_by_sql = <<-SQL
       SELECT * FROM users
-      WHERE username = '#{username}'
+      WHERE username = '#{username.downcase}'
       AND password = '#{password}'
     SQL
 
